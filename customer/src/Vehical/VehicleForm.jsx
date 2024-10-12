@@ -143,7 +143,7 @@ const VehicleForm = () => {
             <input
               type="text"
               className={`form-control w-full p-2 border rounded-lg transition duration-200 focus:outline-none focus:ring-2 ${
-                errors.vehicleId ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"
+                errors.vehicleId ? "border-green-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"
               }`}
               id="inputVehicleId"
               name="vehicleId"
@@ -170,6 +170,8 @@ const VehicleForm = () => {
             />
             {errors.vehicleCategory && <div className="text-red-500 text-xs">{errors.vehicleCategory}</div>}
           </div>
+
+
 
           <div className="form-group">
             <label htmlFor="InputNumber" className="block text-gray-700 font-semibold mb-1 text-sm">

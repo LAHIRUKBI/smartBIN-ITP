@@ -49,7 +49,7 @@ export default function Signin() {
                     navigate('/notification_welcome');
                     break;
                 case 'Order Manager':
-                    navigate('/order_manager');
+                    navigate('/Product_welcome');
                     break;
                 default:
                     setError('Invalid role');

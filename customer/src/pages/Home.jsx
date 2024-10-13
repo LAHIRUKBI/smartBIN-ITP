@@ -40,6 +40,7 @@ const services = [
 
 export default function Home() {
   const [stocks, setStocks] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function Home() {
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await axios.get("/api/listing/get"); // Adjust your API endpoint as needed
+        const response = await axios.get("/api/listing/get");
         setStocks(response.data);
         setLoading(false);
       } catch (error) {
@@ -56,13 +57,28 @@ export default function Home() {
         setLoading(false);
       }
     };
-    
+
+    const fetchProducts = async () => { // Fetch products
+      try {
+        const response = await fetch('/api/product');
+        const data = await response.json();
+        if (data.success) {
+          setProducts(data.data); // Set products data
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false); // Stop the loading state
+      }
+    };
 
     fetchStocks();
+    fetchProducts(); // Call the function to fetch products
   }, []);
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center text-red-500">{error}</div>;
+
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
@@ -217,6 +233,64 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+
+
+{/* Product Section */}
+<section className="py-16">
+  <div className="container mx-auto px-4">
+    <h2 className="text-4xl font-bold text-center mb-12 text-teal-600">
+      Our Products
+    </h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {products.length > 0 ? (
+        products.map((product) => (
+          <div
+            key={product._id}
+            className="bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out hover:shadow-2xl"
+          >
+            <img
+              src={product.image} // Use the product image from the database
+              alt={product.name}
+              className="w-full h-32 object-cover rounded-lg mb-4 shadow-md"
+            />
+            <h3 className="text-2xl font-bold mb-4 text-teal-600">
+              {product.name}
+            </h3>
+            <p className="text-sm text-gray-600 mb-2">
+              <strong>Material:</strong> {product.material}
+            </p>
+            <p className="text-sm text-gray-600 mb-2">
+              <strong>Description:</strong> {product.description}
+            </p>
+            <p className="text-sm text-gray-600 mb-2">
+              <strong>Quantity:</strong> {product.quantity}
+            </p>
+            <p className="text-sm text-gray-600 mb-2">
+              <strong>Unit Price:</strong> ${product.unitPrice}
+            </p>
+            <p className="text-sm text-gray-600 mb-2">
+              <strong>Date:</strong> {new Date(product.date).toLocaleDateString()}
+            </p>
+            
+            <Link
+              to={`/order_payment`} // Link to the purchase page
+              state={product} // Pass the product as state
+              className="inline-block bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg font-semibold shadow-md transition-colors duration-300"
+            >
+              Purchase
+            </Link>
+          </div>
+        ))
+      ) : (
+        <p className="text-center text-gray-600">No products found</p>
+      )}
+    </div>
+  </div>
+</section>
+
+
+
 
       {/* Footer Section */}
       <footer className="bg-gray-800 text-gray-200 py-8 mt-16">

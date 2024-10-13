@@ -45,6 +45,7 @@ import Product_view from "./pages/Product_view";
 
 import Order_payment from "./pages/Order_payment";
 import Order_orders from "./pages/Order_orders";
+import Order_update from "./pages/Order_update";
 
 export default function App() {
   return (
@@ -112,6 +113,8 @@ export default function App() {
 
         <Route path="/order_payment" element={<Order_payment />} />
         <Route path="/order_orders" element={<Order_orders />} />
+        <Route path="/order_update/:id" element={<Order_update />} />
+
 
         
       </Routes>

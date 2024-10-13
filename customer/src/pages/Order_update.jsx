@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FaBox, FaUser, FaMapMarkerAlt, FaPhone, FaMoneyBillWave, FaCreditCard } from 'react-icons/fa';
 
 export default function Order_update() {
   const location = useLocation();
   const navigate = useNavigate();
-  const order = location.state?.order; // Get the order details passed from Product_orders
+  const order = location.state?.order;
 
   // Set initial state for the order details
   const [productName, setProductName] = useState(order?.productName || '');
@@ -32,9 +33,9 @@ export default function Order_update() {
     };
 
     try {
-      await axios.put(`/api/productorder/${order._id}`, updatedOrder); // Your API route to update the order
+      await axios.put(`/api/productorder/${order._id}`, updatedOrder);
       alert('Order updated successfully!');
-      navigate('/order_orders'); // Navigate back to the orders page
+      navigate('/order_orders');
     } catch (error) {
       console.error('Error updating order:', error);
       alert('Error updating order. Please try again.');
@@ -45,87 +46,95 @@ export default function Order_update() {
     <div className="container mx-auto p-8">
       <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">Update Order</h1>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg p-6 shadow-md">
-        <div className="mb-4">
-          <label className="block text-gray-700">Product Name</label>
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg p-6 shadow-md space-y-4">
+        
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaBox className="text-gray-500 mr-2" />
           <input
             type="text"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Product Name"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Quantity</label>
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaMoneyBillWave className="text-gray-500 mr-2" />
           <input
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Quantity"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Total Amount</label>
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaMoneyBillWave className="text-gray-500 mr-2" />
           <input
             type="number"
             value={totalAmount}
             onChange={(e) => setTotalAmount(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Total Amount"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Recipient Name</label>
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaUser className="text-gray-500 mr-2" />
           <input
             type="text"
             value={recipientName}
             onChange={(e) => setRecipientName(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Recipient Name"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Address</label>
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaMapMarkerAlt className="text-gray-500 mr-2" />
           <input
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Address"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Phone Number</label>
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaPhone className="text-gray-500 mr-2" />
           <input
             type="text"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Phone Number"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Payment Method</label>
+        <div className="flex items-center border border-gray-300 rounded-lg p-2">
+          <FaCreditCard className="text-gray-500 mr-2" />
           <input
             type="text"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 w-full"
+            placeholder="Payment Method"
+            className="flex-grow focus:outline-none"
             required
           />
         </div>
 
         <button
           type="submit"
-          className="bg-blue-500 text-white rounded-lg py-2 px-4"
+          className="bg-blue-500 text-white rounded-lg py-2 px-4 w-full hover:bg-blue-600 transition duration-200"
         >
           Update Order
         </button>

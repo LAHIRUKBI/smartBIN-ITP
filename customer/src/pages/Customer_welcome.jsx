@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUserCircle, FaRecycle, FaBoxOpen, FaClipboardList } from 'react-icons/fa'; // Import the new icon
+import { FaUserCircle, FaRecycle, FaBoxOpen, FaClipboardList, FaShoppingCart } from 'react-icons/fa'; // Import the new icon
 
 export default function CustomerWelcome() {
   const navigate = useNavigate();
@@ -57,10 +57,22 @@ export default function CustomerWelcome() {
               className="bg-gradient-to-r from-blue-500 to-blue-300 p-4 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform cursor-pointer border border-white"
               onClick={() => navigate('/customer_stocks')}
             >
-              <FaClipboardList className="text-white text-4xl mb-2 animate-bounce" /> {/* New Icon */}
+              <FaClipboardList className="text-white text-4xl mb-2 animate-bounce" />
               <h2 className="text-lg font-semibold text-white mb-1">View Stock Order</h2>
               <p className="text-gray-100 text-xs">
                 Check the current stock and order status.
+              </p>
+            </div>
+
+            {/* Order Product - New Button */}
+            <div
+              className="bg-gradient-to-r from-purple-500 to-purple-300 p-4 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform cursor-pointer border border-white"
+              onClick={() => navigate('/customer_Product')}
+            >
+              <FaShoppingCart className="text-white text-4xl mb-2 animate-bounce" /> {/* New Icon for Order Product */}
+              <h2 className="text-lg font-semibold text-white mb-1">Order Product</h2>
+              <p className="text-gray-100 text-xs">
+                Browse and order products available for purchase.
               </p>
             </div>
           </div>

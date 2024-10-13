@@ -42,12 +42,13 @@ export default function OrderPayment() {
 
     const orderData = {
       productId: product._id,
+      productName: product.name,  // Include the product name
       quantity,
       totalAmount,
       recipientDetails,
       paymentMethod,
       cardDetails: paymentMethod === 'card' ? cardDetails : null, // Include card details only for card payment
-    };
+  };
 
     setLoading(true);
     setError(''); // Reset error message

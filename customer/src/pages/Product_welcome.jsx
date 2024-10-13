@@ -13,7 +13,7 @@ export default function Product_welcome() {
   };
 
   const handleOtherAction = () => {
-    navigate('/product_orders');  // Navigates to Product_orders page
+    navigate('/order_orders');  // Navigates to Product_orders page
   };
 
   return (

@@ -24,6 +24,7 @@ import Stock_orders from "./pages/Stock_orders";
 import Packing_sending from "./pages/Packing_sending";
 import Packing_shipped from "./pages/Packing_shipped";
 import Packing_orders_update from "./pages/Packing_orders_update";
+import Customer_Product from "./pages/Customer_Product";
 
 /*Complaint*/
 import AddComplaint from "./pages/Complaint/AddComplaint";
@@ -43,7 +44,7 @@ import Product_welcome from "./pages/Product_welcome";
 import Product_view from "./pages/Product_view";
 
 import Order_payment from "./pages/Order_payment";
-import Product_orders from "./pages/Product_orders";
+import Order_orders from "./pages/Order_orders";
 
 export default function App() {
   return (
@@ -72,6 +73,7 @@ export default function App() {
           path="/customer_requestUpdate/:id"
           element={<Customer_requestUpdate />}
         />
+        <Route path="/customer_Product" element={<Customer_Product />} />
 
         <Route path="/packing_welcome" element={<Packing_welcome />} />
         <Route path="/packing_order" element={<Packing_order />} />
@@ -109,7 +111,7 @@ export default function App() {
         <Route path="/product_view" element={<Product_view />} />
 
         <Route path="/order_payment" element={<Order_payment />} />
-        <Route path="/product_orders" element={<Product_orders />} />
+        <Route path="/order_orders" element={<Order_orders />} />
 
         
       </Routes>

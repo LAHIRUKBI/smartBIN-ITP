@@ -6,6 +6,10 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         ref: 'Product',
     },
+    productName: {  // New field for product name
+        type: String,
+        required: true,
+    },
     quantity: {
         type: Number,
         required: true,

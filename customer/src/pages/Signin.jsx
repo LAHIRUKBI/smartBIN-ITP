@@ -40,7 +40,7 @@ export default function Signin() {
                     navigate('/packing_welcome');
                     break;
                 case 'Vehicle Manager':
-                    navigate('/vehicalfrom');
+                    navigate('/vehicle_welcome');
                     break;
                 case 'Product Manager':
                     navigate('/product_manager');

@@ -35,6 +35,10 @@ import VehicleForm from "./Vehical/VehicleForm";
 import VehicleTable from "./Vehical/VehicleTable";
 import RoutForm from "./Vehical/Rout";
 import RoutShow from "./Vehical/Routshow";
+import Vehicle_Welcome from "./Vehical/Vehicle_Welcome";
+import Vehicle_orders from "./Vehical/Vehicle_orders";
+
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -91,6 +95,9 @@ export default function App() {
         <Route path="/vehicalfrom" element={<VehicleForm />} />
         <Route path="/route" element={<RoutForm />} />
         <Route path="/routeSh" element={<RoutShow />} />
+        <Route path="/vehicle_welcome" element={<Vehicle_Welcome />} />
+        <Route path="/vehicle_orders" element={<Vehicle_orders />} />
+        
       </Routes>
     </BrowserRouter>
   );

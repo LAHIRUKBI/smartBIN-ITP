@@ -110,22 +110,11 @@ const VehicleForm = () => {
         <div className="mb-6 flex justify-center space-x-2">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
-            onClick={() => navigate("/vehicles")}
+            onClick={() => navigate("/vehicle_welcome")}
           >
-            Go to Vehicles
+            Go To Back
           </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
-            onClick={() => navigate("/route")}
-          >
-            Go to Route
-          </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
-            onClick={() => navigate("/routeSh")}
-          >
-            Go to RouteSh
-          </button>
+          
         </div>
 
         <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">

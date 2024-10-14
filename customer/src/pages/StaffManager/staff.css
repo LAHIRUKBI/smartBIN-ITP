@@ -1,0 +1,22 @@
+.tablecontiner {
+  padding: 5px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.nav_setbar {
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  gap: 25px;
+  margin: 25px;
+  justify-content: center;
+}
+.nav_itm_stf {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 20px;
+}
+.active_staff_nav {
+  color: green;
+  border-bottom: 2px solid green;
+}

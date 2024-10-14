@@ -24,7 +24,7 @@ export default function Product_welcome() {
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 flex items-center justify-center">
       <div className="bg-white p-8 md:p-10 rounded-xl shadow-lg w-full max-w-md text-center transform transition-all duration-500 hover:shadow-2xl hover:scale-105">
-        <h1 className="text-4xl font-extrabold text-green-700 mb-6 tracking-widest">
+        <h1 className="text-4xl font-extrabold text-blue-700 mb-6 tracking-widest">
           Welcome, Order Manager
         </h1>
         <p className="text-gray-500 mb-8 text-lg">

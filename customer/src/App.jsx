@@ -1,4 +1,4 @@
-// import React from "react";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Customer_Register from "./pages/Customer_Register";
 import Home from "./pages/Home";

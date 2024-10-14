@@ -14,14 +14,11 @@ import ComplainRouter from "./routes/ComplainRoute.js";
 import vehicleRoutes from "./routes/vehicles.js";
 import routeRouting from "./routes/routs.js";
 import vehicleOrderRoutes from "./routes/Vehicles.orders.Route.js";
-
 import productRouter from "./routes/Product.route.js";
 import productorderRouter from "./routes/Order_payment.route.js";
-
-
+import StaffMemberRouter from "./routes/StaffMemberRoute.js";
+import StaffMemberSalaryRouter from "./routes/StaffMemberSalaryRoute.js";
 dotenv.config();
-
-
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
@@ -36,25 +33,21 @@ app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/listing", listingRouter);
 app.use("/api/requestservice", requestServiceRoute);
 app.use("/api/order", orderRouter);
-
 app.use("/api/order", send_order_Router);
 app.use("/api/ship", shippingRoutes);
 app.use("/api/complain", ComplainRouter);
-
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/routes", routeRouting);
 app.use("/api/vehicleorders", vehicleOrderRoutes);
-
 app.use("/api/product", productRouter);
 app.use("/api/productorder", productorderRouter);
-
-
+app.use("/api/staffMember", StaffMemberRouter);
+app.use("/api/staffMemberSalary", StaffMemberSalaryRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

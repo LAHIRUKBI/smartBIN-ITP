@@ -53,6 +53,8 @@ import StaffMemberDetails from "./pages/StaffManager/StaffMemberDetails";
 import UpdateStaffMember from "./pages/StaffManager/UpdateStaffMember";
 import GenarateSalary from "./pages/StaffManager/GenarateSalary";
 import SalaryDetails from "./pages/StaffManager/SalaryDetails";
+import RequestDetails from "./pages/StaffManager/RequestDetails";
+import UpdateRequestStatus from "./pages/StaffManager/UpdateRequestStatus";
 
 export default function App() {
   return (
@@ -67,7 +69,6 @@ export default function App() {
         <Route path="/stockview" element={<Stock_view />} />
         <Route path="/stock/update/:id" element={<Stock_updateList />} />
         <Route path="/stock_orders" element={<Stock_orders />} />
-
         <Route path="/customer_profile" element={<Customer_profile />} />
         <Route path="/customer_updateInfo" element={<Customer_updateInfo />} />
         <Route path="/customer_welcome" element={<Customer_welcome />} />
@@ -122,7 +123,7 @@ export default function App() {
         <Route path="/order_update/:id" element={<Order_update />} />
         <Route path="/order_conform" element={<Order_conform />} />
 
-        {/*Add Staff Member*/}
+        {/*Staff Member*/}
         <Route path="/add_new_staf_member" element={<AddStaffMember />} />
         <Route path="/staff_manager_dash" element={<StaffMemberDetails />} />
         <Route path="/salaryGenarate" element={<GenarateSalary />} />
@@ -130,7 +131,12 @@ export default function App() {
           path="/update_staff_member/:id"
           element={<UpdateStaffMember />}
         />
-                <Route path="/salaryDetails" element={<SalaryDetails />} />
+        <Route path="/salaryDetails" element={<SalaryDetails />} />
+        <Route path="/staff_manager_request" element={<RequestDetails />} />
+        <Route
+          path="/customer_requestStatusUpdate/:id"
+          element={<UpdateRequestStatus />}
+        />
       </Routes>
     </BrowserRouter>
   );

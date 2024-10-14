@@ -31,6 +31,9 @@ const serviceRequestSchema = new Schema({
     type: String,
     required: true, // Ensure this field is required
   },
+  status: {
+    type: String,
+  },
   submittedAt: {
     type: Date,
     default: Date.now,

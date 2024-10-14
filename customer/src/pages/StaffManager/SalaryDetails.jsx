@@ -28,6 +28,12 @@ function SalaryDetails() {
         >
           Salary
         </div>
+        <div
+          className="nav_itm_stf"
+          onClick={() => (window.location.href = "/staff_manager_request")}
+        >
+          Request
+        </div>
       </div>
       <div>
         <div className="min-h-screen  py-8 px-4">

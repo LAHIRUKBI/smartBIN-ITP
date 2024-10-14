@@ -26,29 +26,36 @@ export default function Vehicle_orders() {
   // Show error message if there's an error
   if (error) return <div className="text-red-500 text-center py-5 text-xl font-semibold">{error}</div>;
 
-  // Render the list of vehicle orders
+  // Filter the vehicle orders to only show those with status "Confirm"
+  const confirmedOrders = vehicleOrders.filter(order => order.status === 'Confirm');
+
+  // Render the list of confirmed vehicle orders
   return (
     <div className="max-w-4xl mx-auto p-5">
-      <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Vehicle Orders</h1>
-      <ul className="space-y-6">
-        {vehicleOrders.map((order) => (
-          <li
-            key={order._id}
-            className="bg-white shadow-lg rounded-lg p-6 border border-gray-300 hover:shadow-xl transition-shadow duration-300"
-          >
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">{order.name}</h2>
-            <div className="text-gray-700">
-              <p>Email: <span className="text-gray-900">{order.email}</span></p>
-              <p>Phone: <span className="text-gray-900">{order.phone}</span></p>
-              <p>Address: <span className="text-gray-900">{order.address}</span></p>
-              <p>Service ID: <span className="text-gray-900">{order.serviceId}</span></p>
-              <p>Payment Method: <span className="text-gray-900">{order.paymentMethod}</span></p>
-              <p>Submitted At: <span className="text-gray-900">{new Date(order.submittedAt).toLocaleString()}</span></p>
-              <p>Additional Info: <span className="text-gray-900">{order.additionalInfo || 'N/A'}</span></p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Confirmed Vehicle Orders</h1>
+      {confirmedOrders.length === 0 ? (
+        <div className="text-center py-5 text-xl font-semibold text-gray-600">No confirmed orders found</div>
+      ) : (
+        <ul className="space-y-6">
+          {confirmedOrders.map((order) => (
+            <li
+              key={order._id}
+              className="bg-white shadow-lg rounded-lg p-6 border border-gray-300 hover:shadow-xl transition-shadow duration-300"
+            >
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">{order.name}</h2>
+              <div className="text-gray-700">
+                <p>Email: <span className="text-gray-900">{order.email}</span></p>
+                <p>Phone: <span className="text-gray-900">{order.phone}</span></p>
+                <p>Address: <span className="text-gray-900">{order.address}</span></p>
+                <p>Service ID: <span className="text-gray-900">{order.serviceId}</span></p>
+                <p>Payment Method: <span className="text-gray-900">{order.paymentMethod}</span></p>
+                <p>Submitted At: <span className="text-gray-900">{new Date(order.submittedAt).toLocaleString()}</span></p>
+                <p>Additional Info: <span className="text-gray-900">{order.additionalInfo || 'N/A'}</span></p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

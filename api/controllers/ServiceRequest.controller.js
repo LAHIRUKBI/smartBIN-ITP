@@ -6,7 +6,7 @@ import ServiceRequest from '../models/ServiceRequest.model.js';
 // Submit a New Service Request
 export const submitRequest = async (req, res) => {
   try {
-    const { name, email, phone, address, additionalInfo, serviceId, paymentMethod } = req.body;
+    const { name, email, phone, address, additionalInfo, serviceId, paymentMethod, status } = req.body;
 
     const newRequest = new ServiceRequest({
       name,
@@ -14,7 +14,7 @@ export const submitRequest = async (req, res) => {
       phone,
       address,
       additionalInfo,
-      serviceId,
+      serviceId, status,
       paymentMethod, // Include paymentMethod
     });
 

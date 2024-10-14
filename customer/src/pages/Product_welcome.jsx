@@ -61,7 +61,7 @@ export default function Product_welcome() {
             className="w-full flex items-center justify-center bg-gray-600 text-white py-3 rounded-md shadow-md hover:bg-gray-700 transition-colors transform hover:scale-105"
           >
             <FaClipboardCheck className="mr-2" />
-            View Conform Order
+            View Order
           </button>
         </div>
       </div>

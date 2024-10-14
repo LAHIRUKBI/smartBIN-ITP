@@ -24,6 +24,7 @@ import Stock_orders from "./pages/Stock_orders";
 import Packing_sending from "./pages/Packing_sending";
 import Packing_shipped from "./pages/Packing_shipped";
 import Packing_orders_update from "./pages/Packing_orders_update";
+import Customer_Product from "./pages/Customer_Product";
 
 /*Complaint*/
 import AddComplaint from "./pages/Complaint/AddComplaint";
@@ -35,6 +36,18 @@ import VehicleForm from "./Vehical/VehicleForm";
 import VehicleTable from "./Vehical/VehicleTable";
 import RoutForm from "./Vehical/Rout";
 import RoutShow from "./Vehical/Routshow";
+import Vehicle_Welcome from "./Vehical/Vehicle_Welcome";
+import Vehicle_orders from "./Vehical/Vehicle_orders";
+
+import Product_add from "./pages/Product_add";
+import Product_welcome from "./pages/Product_welcome";
+import Product_view from "./pages/Product_view";
+
+import Order_payment from "./pages/Order_payment";
+import Order_orders from "./pages/Order_orders";
+import Order_update from "./pages/Order_update";
+import Order_conform from "./pages/Order_conform";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -62,6 +75,7 @@ export default function App() {
           path="/customer_requestUpdate/:id"
           element={<Customer_requestUpdate />}
         />
+        <Route path="/customer_Product" element={<Customer_Product />} />
 
         <Route path="/packing_welcome" element={<Packing_welcome />} />
         <Route path="/packing_order" element={<Packing_order />} />
@@ -91,6 +105,22 @@ export default function App() {
         <Route path="/vehicalfrom" element={<VehicleForm />} />
         <Route path="/route" element={<RoutForm />} />
         <Route path="/routeSh" element={<RoutShow />} />
+        <Route path="/vehicle_welcome" element={<Vehicle_Welcome />} />
+        <Route path="/vehicle_orders" element={<Vehicle_orders />} />
+
+
+        {/*Order*/}
+        <Route path="/product_welcome" element={<Product_welcome />} />
+        <Route path="/product_add" element={<Product_add />} />
+        <Route path="/product_view" element={<Product_view />} />
+
+        <Route path="/order_payment" element={<Order_payment />} />
+        <Route path="/order_orders" element={<Order_orders />} />
+        <Route path="/order_update/:id" element={<Order_update />} />
+        <Route path="/order_conform" element={<Order_conform />} />
+
+
+        
       </Routes>
     </BrowserRouter>
   );

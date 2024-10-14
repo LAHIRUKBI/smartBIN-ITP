@@ -1,6 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Notification_welcome() {
+  const navigate = useNavigate();
+
+  const handleViewComplaints = () => {
+    navigate('/allComplaint');
+  };
+
   return (
     <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-md text-center">
@@ -11,9 +18,15 @@ export default function Notification_welcome() {
           Stay up to date with all your latest notifications and manage them
           efficiently. Let’s get started!
         </p>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-all">
-          View Notifications
-        </button>
+        <div className="space-y-4">
+          
+          <button 
+            className="bg-red-600 text-white px-4 py-2 rounded-md shadow hover:bg-red-700 transition-all"
+            onClick={handleViewComplaints}
+          >
+            View All Complaints
+          </button>
+        </div>
       </div>
     </div>
   );

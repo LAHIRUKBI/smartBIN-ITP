@@ -13,9 +13,14 @@ import shippingRoutes from "./routes/Shipping.Route.js";
 import ComplainRouter from "./routes/ComplainRoute.js";
 import vehicleRoutes from "./routes/vehicles.js";
 import routeRouting from "./routes/routs.js";
+import vehicleOrderRoutes from "./routes/Vehicles.orders.Route.js";
+
+import productRouter from "./routes/Product.route.js";
+import productorderRouter from "./routes/Order_payment.route.js";
+
+
 dotenv.config();
 
-// Middleware for CORS and Body Parsing
 
 mongoose
   .connect(process.env.MONGO)
@@ -44,6 +49,12 @@ app.use("/api/complain", ComplainRouter);
 
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/routes", routeRouting);
+app.use("/api/vehicleorders", vehicleOrderRoutes);
+
+app.use("/api/product", productRouter);
+app.use("/api/productorder", productorderRouter);
+
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

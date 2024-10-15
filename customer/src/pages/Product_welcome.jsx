@@ -22,21 +22,21 @@ export default function Product_welcome() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-100 to-blue-200 flex items-center justify-center">
-      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-lg text-center transform transition-all duration-500 hover:shadow-xl">
 
-        <h1 className="text-4xl font-extrabold text-blue-700 mb-6 tracking-wide">
+    <div className="min-h-screen bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 flex items-center justify-center">
+      <div className="bg-white p-8 md:p-10 rounded-xl shadow-lg w-full max-w-md text-center transform transition-all duration-500 hover:shadow-2xl hover:scale-105">
+        <h1 className="text-4xl font-extrabold text-blue-700 mb-6 tracking-widest">
 
           Welcome, Order Manager
         </h1>
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-500 mb-8 text-lg">
           Manage products efficiently using the options below.
         </p>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           <button
             onClick={handleAddProduct}
-            className="w-full flex items-center justify-center bg-blue-600 text-white py-3 rounded-md shadow-md hover:bg-blue-700 transition-colors transform hover:scale-105"
+            className="w-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg shadow-md hover:bg-blue-600 transition-transform transform hover:scale-105 hover:shadow-lg"
           >
             <FaPlus className="mr-2" />
             Add New Product
@@ -44,7 +44,7 @@ export default function Product_welcome() {
           
           <button
             onClick={handleViewProduct}
-            className="w-full flex items-center justify-center bg-gray-600 text-white py-3 rounded-md shadow-md hover:bg-gray-700 transition-colors transform hover:scale-105"
+            className="w-full flex items-center justify-center bg-gradient-to-r from-gray-600 to-gray-800 text-white py-3 rounded-lg shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 hover:shadow-lg"
           >
             <FaEye className="mr-2" />
             View Product
@@ -52,7 +52,7 @@ export default function Product_welcome() {
           
           <button
             onClick={handleOtherAction}
-            className="w-full flex items-center justify-center bg-gray-600 text-white py-3 rounded-md shadow-md hover:bg-gray-700 transition-colors transform hover:scale-105"
+            className="w-full flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 rounded-lg shadow-md hover:bg-indigo-600 transition-transform transform hover:scale-105 hover:shadow-lg"
           >
             <FaList className="mr-2" />
             View Product Orders
@@ -60,7 +60,7 @@ export default function Product_welcome() {
 
           <button
             onClick={handleViewConformOrder}
-            className="w-full flex items-center justify-center bg-gray-600 text-white py-3 rounded-md shadow-md hover:bg-gray-700 transition-colors transform hover:scale-105"
+            className="w-full flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg shadow-md hover:bg-green-600 transition-transform transform hover:scale-105 hover:shadow-lg"
           >
             <FaClipboardCheck className="mr-2" />
 
@@ -72,3 +72,4 @@ export default function Product_welcome() {
     </div>
   );
 }
+  

@@ -42,11 +42,13 @@ import Vehicle_orders from "./Vehical/Vehicle_orders";
 import Product_add from "./pages/Product_add";
 import Product_welcome from "./pages/Product_welcome";
 import Product_view from "./pages/Product_view";
+import Product_update from "./pages/Product_update";
 
 import Order_payment from "./pages/Order_payment";
 import Order_orders from "./pages/Order_orders";
 import Order_update from "./pages/Order_update";
 import Order_conform from "./pages/Order_conform";
+import Order_welcome from "./pages/Order_welcome";
 /*Staff Manager */
 import AddStaffMember from "./pages/StaffManager/AddStaffMember";
 import StaffMemberDetails from "./pages/StaffManager/StaffMemberDetails";
@@ -114,14 +116,18 @@ export default function App() {
         <Route path="/vehicle_welcome" element={<Vehicle_Welcome />} />
         <Route path="/vehicle_orders" element={<Vehicle_orders />} />
 
-        {/*Order*/}
+        {/*Product*/}
         <Route path="/product_welcome" element={<Product_welcome />} />
         <Route path="/product_add" element={<Product_add />} />
         <Route path="/product_view" element={<Product_view />} />
+        <Route path="/product_update/:id" element={<Product_update />} />
+
+        {/*Order*/}
         <Route path="/order_payment" element={<Order_payment />} />
         <Route path="/order_orders" element={<Order_orders />} />
         <Route path="/order_update/:id" element={<Order_update />} />
         <Route path="/order_conform" element={<Order_conform />} />
+        <Route path="/order_welcome" element={<Order_welcome />} />
 
         {/*Staff Member*/}
         <Route path="/add_new_staf_member" element={<AddStaffMember />} />

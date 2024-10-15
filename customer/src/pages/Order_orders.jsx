@@ -157,7 +157,7 @@ export default function Product_orders() {
       {/* Navigation Buttons */}
       <div className="mb-4 text-center">
         <button
-          onClick={() => navigate('/product_welcome')}
+          onClick={() => navigate('/order_welcome')}
           className="bg-blue-500 text-white rounded-lg py-2 px-4 hover:bg-blue-600 transition duration-200 mx-2"
         >
           Go to Product Welcome

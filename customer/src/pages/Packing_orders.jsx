@@ -1,8 +1,8 @@
-// Packing_orders.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default function Packing_orders() {
   const [orders, setOrders] = useState([]);
@@ -62,21 +62,32 @@ export default function Packing_orders() {
     navigate('/packing_orders_update', { state: { order } });
   };
 
-  const generatePDF = (order) => {
+  //  function to generate PDF using autoTable
+  const generatePDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(12);
-    doc.text(`Order Details for ${order.name}`, 10, 10);
-    doc.text(`Email: ${order.email}`, 10, 20);
-    doc.text(`Phone: ${order.phone}`, 10, 30);
-    doc.text(`Address: ${order.address}`, 10, 40);
-    doc.text(`Service ID: ${order.serviceId}`, 10, 50);
-    doc.text(`Payment Method: ${order.paymentMethod}`, 10, 60);
-    doc.text(`Quantity: ${order.quantity}`, 10, 70);
-    doc.text(`Submitted At: ${new Date(order.submittedAt).toLocaleString()}`, 10, 80);
-    doc.save(`Order_${order._id}.pdf`);
+    doc.text('Packing Orders Report', 14, 20);
+
+    const tableColumn = [
+      "Name", "Email", "Phone", "Address", 
+      "Service ID", "Payment Method", "Quantity", 
+      "Submitted At"
+    ];
+
+    const tableRows = orders.map(order => [
+      order.name || 'N/A',
+      order.email || 'N/A',
+      order.phone || 'N/A',
+      order.address || 'N/A',
+      order.serviceId || 'N/A',
+      order.paymentMethod || 'N/A',
+      order.quantity || 'N/A',
+      new Date(order.submittedAt).toLocaleDateString(),
+    ]);
+
+    doc.autoTable({ head: [tableColumn], body: tableRows, startY: 30 });
+    doc.save('packing_orders_report.pdf');
   };
 
-  // Function to send order to StockOrders page
   const sendToStockManager = (order) => {
     const storedStockOrders = JSON.parse(localStorage.getItem('stockOrders')) || [];
     storedStockOrders.push(order);
@@ -99,54 +110,59 @@ export default function Packing_orders() {
       {orders.length === 0 ? (
         <p className="text-center text-lg text-gray-600">No orders available</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {orders.map((order) => (
-            <div key={order._id} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
-              <h2 className="text-xl font-bold text-gray-800">{order.name}</h2>
-              <p className="text-gray-700 mb-2"><strong>Email:</strong> {order.email}</p>
-              <p className="text-gray-700 mb-2"><strong>Phone:</strong> {order.phone}</p>
-              <p className="text-gray-700 mb-2"><strong>Address:</strong> {order.address}</p>
-              <p className="text-gray-700 mb-2"><strong>Service ID:</strong> {order.serviceId}</p>
-              <p className="text-gray-700 mb-2"><strong>Payment Method:</strong> {order.paymentMethod}</p>
-              <p className="text-gray-700 mb-2"><strong>Quantity:</strong> {order.quantity}</p>
-              <p className="text-gray-700 mb-4"><strong>Submitted At:</strong> {new Date(order.submittedAt).toLocaleString()}</p>
+        <>
+          <button onClick={generatePDF} className="mb-4 bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition duration-200">
+            Generate Report PDF
+          </button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {orders.map((order) => (
+              <div key={order._id} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                <h2 className="text-xl font-bold text-gray-800">{order.name}</h2>
+                <p className="text-gray-700 mb-2"><strong>Email:</strong> {order.email}</p>
+                <p className="text-gray-700 mb-2"><strong>Phone:</strong> {order.phone}</p>
+                <p className="text-gray-700 mb-2"><strong>Address:</strong> {order.address}</p>
+                <p className="text-gray-700 mb-2"><strong>Service ID:</strong> {order.serviceId}</p>
+                <p className="text-gray-700 mb-2"><strong>Payment Method:</strong> {order.paymentMethod}</p>
+                <p className="text-gray-700 mb-2"><strong>Quantity:</strong> {order.quantity}</p>
+                <p className="text-gray-700 mb-4"><strong>Submitted At:</strong> {new Date(order.submittedAt).toLocaleString()}</p>
 
-              {/* Message Box for Each Order */}
-              <textarea
-                value={messages[order._id] || ''}
-                onChange={(e) => setMessages({ ...messages, [order._id]: e.target.value })}
-                className="border rounded-lg p-2 w-full"
-                placeholder="Type your message for this order..."
-              />
-              <button onClick={() => sendMessage(order._id)} className="mt-2 bg-blue-500 text-white py-2 px-4 rounded">Send Message</button>
+                {/* Message Box for Each Order */}
+                <textarea
+                  value={messages[order._id] || ''}
+                  onChange={(e) => setMessages({ ...messages, [order._id]: e.target.value })}
+                  className="border rounded-lg p-2 w-full"
+                  placeholder="Type your message for this order..."
+                />
+                <button onClick={() => sendMessage(order._id)} className="mt-2 bg-blue-500 text-white py-2 px-4 rounded">
+                  Send Message
+                </button>
 
-              {/* Display Message from Stock Manager */}
-              {messages[order._id] && (
-                <p className="text-gray-600 mt-2">Sent Message: {messages[order._id]}</p>
-              )}
+                {/* Display Message from Stock Manager */}
+                {messages[order._id] && (
+                  <p className="text-gray-600 mt-2">Sent Message: {messages[order._id]}</p>
+                )}
 
-              {/* Display Reply from Stock Manager */}
-              {replies[order._id] && (
-                <p className="text-green-600 mt-2">Stock Manager Reply: {replies[order._id]}</p>
-              )}
+                {/* Display Reply from Stock Manager */}
+                {replies[order._id] && (
+                  <p className="text-green-600 mt-2">Stock Manager Reply: {replies[order._id]}</p>
+                )}
 
-              <div className="mt-4 space-y-2">
-                <button onClick={() => handleUpdateOrder(order)} className="w-full bg-yellow-500 text-white py-2 rounded-full hover:bg-yellow-600 transition duration-200">
-                  Update
-                </button>
-                <button onClick={() => deleteOrder(order._id)} className="w-full bg-red-500 text-white py-2 rounded-full hover:bg-red-600 transition duration-200">
-                  Delete
-                </button>
-                <button onClick={() => generatePDF(order)} className="w-full bg-green-500 text-white py-2 rounded-full hover:bg-green-600 transition duration-200">
-                  Generate PDF
-                </button>
-                <button onClick={() => sendToStockManager(order)} className="w-full bg-indigo-500 text-white py-2 rounded-full hover:bg-indigo-600 transition duration-200">
-                  Send to Stock Manager
-                </button>
+                <div className="mt-4 space-y-2">
+                  <button onClick={() => handleUpdateOrder(order)} className="w-full bg-yellow-500 text-white py-2 rounded-full hover:bg-yellow-600 transition duration-200">
+                    Update
+                  </button>
+                  <button onClick={() => deleteOrder(order._id)} className="w-full bg-red-500 text-white py-2 rounded-full hover:bg-red-600 transition duration-200">
+                    Delete
+                  </button>
+                  <button onClick={() => sendToStockManager(order)} className="w-full bg-indigo-500 text-white py-2 rounded-full hover:bg-indigo-600 transition duration-200">
+                    Send to Stock Manager
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

@@ -34,7 +34,7 @@ export default function Signin() {
                     navigate('/stockwelcome');
                     break;
                 case 'Staff Manager':
-                    navigate('/staff_manager');
+                    navigate('/staff_manager_dash');
                     break;
                 case 'Packing Manager':
                     navigate('/packing_welcome');

@@ -174,23 +174,41 @@ function AllComplaint() {
       {/* Footer Section */}
       <footer className="bg-green-800 text-white text-center py-6 mt-12">
         <div className="container mx-auto">
-          <h3 className="text-lg font-bold mb-2">Join Us in Making a Difference!</h3>
-          <p className="mb-4">Your journey towards a greener planet starts here.</p>
+          <h3 className="text-lg font-bold mb-2">
+            Join Us in Making a Difference!
+          </h3>
+          <p className="mb-4">
+            Your journey towards a greener planet starts here.
+          </p>
           <div className="flex justify-center space-x-4 mb-4">
-            <a href="https://facebook.com" className="text-gray-300 hover:text-white">
+            <a
+              href="https://facebook.com"
+              className="text-gray-300 hover:text-white"
+            >
               <i className="fab fa-facebook-f"></i>
             </a>
-            <a href="https://twitter.com" className="text-gray-300 hover:text-white">
+            <a
+              href="https://twitter.com"
+              className="text-gray-300 hover:text-white"
+            >
               <i className="fab fa-twitter"></i>
             </a>
-            <a href="https://instagram.com" className="text-gray-300 hover:text-white">
+            <a
+              href="https://instagram.com"
+              className="text-gray-300 hover:text-white"
+            >
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://linkedin.com" className="text-gray-300 hover:text-white">
+            <a
+              href="https://linkedin.com"
+              className="text-gray-300 hover:text-white"
+            >
               <i className="fab fa-linkedin-in"></i>
             </a>
           </div>
-          <p className="text-sm">© {new Date().getFullYear()} Your Company. All rights reserved.</p>
+          <p className="text-sm">
+            © {new Date().getFullYear()} Your Company. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

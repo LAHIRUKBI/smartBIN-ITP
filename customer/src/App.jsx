@@ -1,4 +1,4 @@
-// import React from "react";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Customer_Register from "./pages/Customer_Register";
 import Home from "./pages/Home";
@@ -47,6 +47,14 @@ import Order_payment from "./pages/Order_payment";
 import Order_orders from "./pages/Order_orders";
 import Order_update from "./pages/Order_update";
 import Order_conform from "./pages/Order_conform";
+/*Staff Manager */
+import AddStaffMember from "./pages/StaffManager/AddStaffMember";
+import StaffMemberDetails from "./pages/StaffManager/StaffMemberDetails";
+import UpdateStaffMember from "./pages/StaffManager/UpdateStaffMember";
+import GenarateSalary from "./pages/StaffManager/GenarateSalary";
+import SalaryDetails from "./pages/StaffManager/SalaryDetails";
+import RequestDetails from "./pages/StaffManager/RequestDetails";
+import UpdateRequestStatus from "./pages/StaffManager/UpdateRequestStatus";
 
 export default function App() {
   return (
@@ -61,7 +69,6 @@ export default function App() {
         <Route path="/stockview" element={<Stock_view />} />
         <Route path="/stock/update/:id" element={<Stock_updateList />} />
         <Route path="/stock_orders" element={<Stock_orders />} />
-
         <Route path="/customer_profile" element={<Customer_profile />} />
         <Route path="/customer_updateInfo" element={<Customer_updateInfo />} />
         <Route path="/customer_welcome" element={<Customer_welcome />} />
@@ -99,7 +106,6 @@ export default function App() {
         <Route path="/replyComplaint/:id" element={<ReplyComplaint />} />
         <Route path="/mycomplaint" element={<MyComplaint />} />
 
-        
         {/*Vehicles*/}
         <Route path="/vehicles" element={<VehicleTable />} />
         <Route path="/vehicalfrom" element={<VehicleForm />} />
@@ -108,19 +114,29 @@ export default function App() {
         <Route path="/vehicle_welcome" element={<Vehicle_Welcome />} />
         <Route path="/vehicle_orders" element={<Vehicle_orders />} />
 
-
         {/*Order*/}
         <Route path="/product_welcome" element={<Product_welcome />} />
         <Route path="/product_add" element={<Product_add />} />
         <Route path="/product_view" element={<Product_view />} />
-
         <Route path="/order_payment" element={<Order_payment />} />
         <Route path="/order_orders" element={<Order_orders />} />
         <Route path="/order_update/:id" element={<Order_update />} />
         <Route path="/order_conform" element={<Order_conform />} />
 
-
-        
+        {/*Staff Member*/}
+        <Route path="/add_new_staf_member" element={<AddStaffMember />} />
+        <Route path="/staff_manager_dash" element={<StaffMemberDetails />} />
+        <Route path="/salaryGenarate" element={<GenarateSalary />} />
+        <Route
+          path="/update_staff_member/:id"
+          element={<UpdateStaffMember />}
+        />
+        <Route path="/salaryDetails" element={<SalaryDetails />} />
+        <Route path="/staff_manager_request" element={<RequestDetails />} />
+        <Route
+          path="/customer_requestStatusUpdate/:id"
+          element={<UpdateRequestStatus />}
+        />
       </Routes>
     </BrowserRouter>
   );

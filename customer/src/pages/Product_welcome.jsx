@@ -22,9 +22,11 @@ export default function Product_welcome() {
   };
 
   return (
+
     <div className="min-h-screen bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 flex items-center justify-center">
       <div className="bg-white p-8 md:p-10 rounded-xl shadow-lg w-full max-w-md text-center transform transition-all duration-500 hover:shadow-2xl hover:scale-105">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-6 tracking-widest">
+
           Welcome, Order Manager
         </h1>
         <p className="text-gray-500 mb-8 text-lg">
@@ -61,7 +63,9 @@ export default function Product_welcome() {
             className="w-full flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg shadow-md hover:bg-green-600 transition-transform transform hover:scale-105 hover:shadow-lg"
           >
             <FaClipboardCheck className="mr-2" />
-            View Confirmed Orders
+
+            View Conform Order
+
           </button>
         </div>
       </div>

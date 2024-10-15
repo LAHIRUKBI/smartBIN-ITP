@@ -5,7 +5,7 @@ export default function Packing_welcome() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
       <h1 className="text-4xl font-bold text-gray-800 mb-8">
-        Welcome, Packing and Shipping Manager!
+        Welcome, Packing and Shipping Managers!
       </h1>
 
       <p className="text-lg text-gray-600 mb-12 text-center">

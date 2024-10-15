@@ -43,13 +43,13 @@ export default function Signin() {
                     navigate('/vehicle_welcome');
                     break;
                 case 'Product Manager':
-                    navigate('/product_manager');
+                    navigate('/product_welcome');
                     break;
                 case 'Notification Manager':
                     navigate('/notification_welcome');
                     break;
                 case 'Order Manager':
-                    navigate('/Product_welcome');
+                    navigate('/order_welcome');
                     break;
                 default:
                     setError('Invalid role');

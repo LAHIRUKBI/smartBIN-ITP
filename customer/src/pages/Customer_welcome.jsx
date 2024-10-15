@@ -70,7 +70,7 @@ export default function CustomerWelcome() {
               onClick={() => navigate('/customer_Product')}
             >
               <FaShoppingCart className="text-white text-4xl mb-2 animate-bounce" /> {/* New Icon for Order Product */}
-              <h2 className="text-lg font-semibold text-white mb-1">Order Product</h2>
+              <h2 className="text-lg font-semibold text-white mb-1">Order Products</h2>
               <p className="text-gray-100 text-xs">
                 Browse and order products available for purchase.
               </p>

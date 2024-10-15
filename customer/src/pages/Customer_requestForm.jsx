@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaUser, FaEnvelope, FaPhone, FaHome, FaInfoCircle, FaClipboardList, FaArrowLeft } from 'react-icons/fa';
 
+// Define services
 const services = [
   {
     id: 1,
@@ -27,6 +28,44 @@ const services = [
   },
 ];
 
+// Confirmation Modal Component
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, formData, selectedService }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white rounded-lg p-6 max-w-md mx-auto">
+        <h2 className="text-xl font-bold mb-4">Confirm Your Request</h2>
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold">Personal Information</h3>
+          <p><strong>Name:</strong> {formData.name}</p>
+          <p><strong>Email:</strong> {formData.email}</p>
+          <p><strong>Phone:</strong> {formData.phone}</p>
+          <p><strong>Address:</strong> {formData.address}</p>
+          <p><strong>Additional Info:</strong> {formData.additionalInfo}</p>
+          <h3 className="text-lg font-semibold">Service Details</h3>
+          {selectedService && (
+            <>
+              <p><strong>Service Type:</strong> {selectedService.type}</p>
+              <p><strong>Description:</strong> {selectedService.description}</p>
+              <p><strong>Availability:</strong> {selectedService.availability}</p>
+              <p><strong>Cost:</strong> {selectedService.cost}</p>
+            </>
+          )}
+        </div>
+        <div className="flex justify-end mt-4">
+          <button className="px-4 py-2 bg-gray-300 rounded-md mr-2" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="px-4 py-2 bg-teal-600 text-white rounded-md" onClick={onConfirm}>
+            Confirm Request
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Customer_requestForm() {
   const { serviceId } = useParams();
   const navigate = useNavigate();
@@ -40,6 +79,7 @@ export default function Customer_requestForm() {
     additionalInfo: '',
     paymentMethod: '', // New field for payment method
   });
+  const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const service = services.find(service => service.id === parseInt(selectedServiceId, 10));
@@ -69,7 +109,7 @@ export default function Customer_requestForm() {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     // Validate email
@@ -91,6 +131,11 @@ export default function Customer_requestForm() {
       return;
     }
 
+    // Open the confirmation modal
+    setModalOpen(true);
+  };
+
+  const handleConfirm = async () => {
     try {
       const response = await axios.post('/api/requestservice/submit', {
         ...formData,
@@ -101,6 +146,8 @@ export default function Customer_requestForm() {
     } catch (error) {
       console.error('Error submitting request:', error);
       alert('Error submitting request');
+    } finally {
+      setModalOpen(false); // Close the modal after submission
     }
   };
 
@@ -169,52 +216,17 @@ export default function Customer_requestForm() {
                     <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                       <FaHome className="inline mr-2" /> Address
                     </label>
-                    <textarea
+                    <input
+                      type="text"
                       id="address"
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
                       required
-                      rows="3"
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                      placeholder="123 Main St, Apt 4B, Malabe, Colombo, 548"
-                    ></textarea>
+                      placeholder="123 Street Name, City"
+                    />
                   </div>
-                </div>
-
-                {/* Service Details Section */}
-                <div className="space-y-4">
-                  <h2 className="text-2xl font-semibold text-teal-600 flex items-center">
-                    <FaClipboardList className="mr-2" /> Service Details
-                  </h2>
-
-                  <div>
-                    <label htmlFor="service" className="block text-sm font-medium text-gray-700">
-                      <FaClipboardList className="inline mr-2" /> Select Service
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={selectedServiceId}
-                      onChange={handleServiceChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                    >
-                      <option value="" disabled>Select a service</option>
-                      {services.map(service => (
-                        <option key={service.id} value={service.id}>
-                          {service.type}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {selectedService && (
-                    <div className="text-gray-800 mt-4">
-                      <p><strong>Description:</strong> {selectedService.description}</p>
-                      <p><strong>Availability:</strong> {selectedService.availability}</p>
-                      <p><strong>Cost:</strong> {selectedService.cost}</p>
-                    </div>
-                  )}
 
                   <div>
                     <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">
@@ -225,37 +237,70 @@ export default function Customer_requestForm() {
                       name="additionalInfo"
                       value={formData.additionalInfo}
                       onChange={handleChange}
-                      rows="4"
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                      placeholder="Enter any additional information or special requests."
-                    ></textarea>
-                  </div>
-
-                  <div>
-                    <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700">
-                      Payment Method
-                    </label>
-                    <select
-                      id="paymentMethod"
-                      name="paymentMethod"
-                      value={formData.paymentMethod}
-                      onChange={handleChange}
                       required
                       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                    >
-                      <option value="" disabled>Select payment method</option>
-                      <option value="creditCard">Cash</option>
-                      <option value="paypal">Credit Card</option>
-                      <option value="bankTransfer">Bank Transfer</option>
-                    </select>
+                      placeholder="Any additional information or special requests"
+                    ></textarea>
                   </div>
                 </div>
+
+                {/* Service Selection Section */}
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-semibold text-teal-600 flex items-center">
+                    <FaClipboardList className="mr-2" /> Service Selection
+                  </h2>
+                  <div>
+                    <label htmlFor="service" className="block text-sm font-medium text-gray-700">
+                      Select Service
+                    </label>
+                    <select
+                      id="service"
+                      value={selectedServiceId}
+                      onChange={handleServiceChange}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                    >
+                      {services.map(service => (
+                        <option key={service.id} value={service.id}>
+                          {service.type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {selectedService && (
+                    <div className="p-4 bg-gray-100 rounded-md border border-gray-300">
+                      <h3 className="text-lg font-semibold">{selectedService.type}</h3>
+                      <p>{selectedService.description}</p>
+                      <p><strong>Availability:</strong> {selectedService.availability}</p>
+                      <p><strong>Cost:</strong> {selectedService.cost}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700">
+                  Payment Method
+                </label>
+                <select
+                  id="paymentMethod"
+                  name="paymentMethod"
+                  value={formData.paymentMethod}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                >
+                  <option value="">Select a payment method</option>
+                  <option value="creditCard">Cash</option>
+                  <option value="debitCard">Debit Card</option>
+                  <option value="paypal">Credit Card</option>
+                </select>
               </div>
 
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="mt-4 px-6 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none"
+                  className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
                 >
                   Submit Request
                 </button>
@@ -263,14 +308,14 @@ export default function Customer_requestForm() {
             </form>
           </div>
         </div>
+        
       </div>
 
-      {/* Footer Section */}
-      <footer className="bg-green-800 text-white text-center py-6">
+      <footer className="bg-green-800 text-white text-center py-4">
                 <div className="container mx-auto">
                     <h3 className="text-lg font-bold mb-2">Join Us in Making a Difference!</h3>
-                    <p className="mb-4">Your journey towards a greener planet starts here.</p>
-                    <div className="flex justify-center mb-4">
+                    <p className="mb-2">Your journey towards a greener planet starts here.</p>
+                    <div className="flex justify-center mb-2">
                         <a href="https://facebook.com" className="mx-2 text-gray-300 hover:text-white">
                             <i className="fab fa-facebook-f"></i>
                         </a>
@@ -287,6 +332,15 @@ export default function Customer_requestForm() {
                     <p className="text-sm">© {new Date().getFullYear()} Your Company. All rights reserved.</p>
                 </div>
             </footer>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={handleConfirm}
+        formData={formData}
+        selectedService={selectedService}
+      />
     </div>
   );
 }

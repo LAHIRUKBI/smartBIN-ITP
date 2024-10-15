@@ -189,50 +189,51 @@ export default function Home() {
       </section>
 
       {/* Section for displaying stock dates */}
-      <div className="mt-16">
-        <h2 className="text-4xl font-bold text-center mb-12 text-teal-400">
-          Stock Dates Overview
-        </h2>
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-          {stocks.map((stock) => (
-            <div
-              key={stock._id}
-              className="bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out hover:shadow-2xl"
-            >
-              <h3 className="text-2xl font-bold mb-4 text-teal-600">
-                {stock.name}
-              </h3>
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Category:</strong> {stock.category}
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Added on:</strong>{" "}
-                {new Date(stock.addDate).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <strong>Expiry Date:</strong>{" "}
-                {new Date(stock.expiryDate).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-600 mb-4">
-                <strong>Quantity:</strong>{" "}
-                <span className="font-semibold">
-                  {stock.quantity} {stock.unitOfMeasure}
-                </span>
-              </p>
-              <div className="flex justify-center">
-                <button
-                  className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-full font-semibold shadow-md transition-all duration-300"
-                  onClick={() =>
-                    navigate(`/packing_order`, { state: stock })
-                  }
-                >
-                  Buy
-                </button>
-              </div>
-            </div>
-          ))}
+<div className="mt-16">
+  <h2 className="text-4xl font-bold text-center mb-12 text-teal-500">
+    Stocks Overview
+  </h2>
+  <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+    {stocks.map((stock) => (
+      <div
+        key={stock._id}
+        className="bg-white p-8 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-2xl"
+      >
+        <h3 className="text-2xl font-bold mb-4 text-teal-600">
+          {stock.name}
+        </h3>
+        <p className="text-sm text-gray-700 mb-2">
+          <strong>Category:</strong> {stock.category}
+        </p>
+        <p className="text-sm text-gray-700 mb-2">
+          <strong>Added on:</strong>{" "}
+          {new Date(stock.addDate).toLocaleDateString()}
+        </p>
+        <p className="text-sm text-gray-700 mb-2">
+          <strong>Expiry Date:</strong>{" "}
+          {new Date(stock.expiryDate).toLocaleDateString()}
+        </p>
+        <p className="text-sm text-gray-700 mb-4">
+          <strong>Quantity:</strong>{" "}
+          <span className="font-semibold">
+            {stock.quantity} {stock.unitOfMeasure}
+          </span>
+        </p>
+        <div className="flex justify-center">
+          <button
+            className="bg-teal-500 hover:bg-teal-600 text-white py-3 px-5 rounded-full font-semibold shadow-lg transition-all duration-300"
+            onClick={() =>
+              navigate(`/packing_order`, { state: stock })
+            }
+          >
+            Buy Now
+          </button>
         </div>
       </div>
+    ))}
+  </div>
+</div>
+
 
 
 
@@ -249,11 +250,7 @@ export default function Home() {
             key={product._id}
             className="bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out hover:shadow-2xl"
           >
-            <img
-              src={product.image} // Use the product image from the database
-              alt={product.name}
-              className="w-full h-32 object-cover rounded-lg mb-4 shadow-md"
-            />
+            
             <h3 className="text-2xl font-bold mb-4 text-teal-600">
               {product.name}
             </h3>

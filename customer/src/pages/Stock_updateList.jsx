@@ -10,6 +10,7 @@ export default function StockUpdateList() {
   const [stock, setStock] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [validationError, setValidationError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,12 @@ export default function StockUpdateList() {
   }, [id]);
 
   const handleUpdate = async () => {
+    // Validate fields before updating
+    if (stock.quantity < 0 || stock.price < 0) {
+      setValidationError("Quantity and Price cannot be negative.");
+      return;
+    }
+    
     try {
       await axios.put(`/api/listing/update/${id}`, stock);
       navigate("/stockview"); // Ensure this path matches your routes
@@ -46,6 +53,14 @@ export default function StockUpdateList() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validate input fields
+    if ((name === "quantity" || name === "price") && value < 0) {
+      setValidationError("Quantity and Price cannot be negative.");
+      return;
+    }
+
+    setValidationError(null); // Clear any previous validation error
     setStock({ ...stock, [name]: value });
   };
 
@@ -67,15 +82,15 @@ export default function StockUpdateList() {
         <p className="text-gray-600 mb-4 text-center">
           Modify the stock item details to keep your inventory updated.
         </p>
-        <form className="space-y-4 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form className="space-y-6 w-full"> {/* Increased spacing here */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> {/* Increased gap here */}
             {/* Basic Information */}
-            <div className="border p-3 rounded-lg shadow-md bg-gray-50">
+            <div className="border p-4 rounded-lg shadow-md bg-gray-50"> {/* Increased padding here */}
               <h2 className="text-lg font-semibold text-gray-700 mb-2">
                 <FaBox className="inline-block mr-2" />
                 Basic Info
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-4"> {/* Increased spacing here */}
                 <div>
                   <label className="block text-gray-700 font-semibold">
                     <FaTag className="inline-block mr-2" />
@@ -86,7 +101,7 @@ export default function StockUpdateList() {
                     name="name"
                     value={stock.name || ""}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500" // Increased padding
                   />
                 </div>
                 <div>
@@ -99,7 +114,7 @@ export default function StockUpdateList() {
                     name="quantity"
                     value={stock.quantity || ""}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500" // Increased padding
                   />
                 </div>
                 <div>
@@ -111,7 +126,7 @@ export default function StockUpdateList() {
                     name="unitOfMeasure"
                     value={stock.unitOfMeasure || ""}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500" // Increased padding
                   >
                     <option value="" disabled>
                       Select a unit
@@ -132,12 +147,12 @@ export default function StockUpdateList() {
             </div>
 
             {/* Additional Details */}
-            <div className="border p-3 rounded-lg shadow-md bg-gray-50">
+            <div className="border p-4 rounded-lg shadow-md bg-gray-50"> {/* Increased padding here */}
               <h2 className="text-lg font-semibold text-gray-700 mb-2">
                 <MdCategory className="inline-block mr-2" />
                 Additional Details
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-4"> {/* Increased spacing here */}
                 <div>
                   <label className="block text-gray-700 font-semibold">
                     <MdCategory className="inline-block mr-2" />
@@ -148,7 +163,7 @@ export default function StockUpdateList() {
                     name="category"
                     value={stock.category || ""}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500" // Increased padding
                   />
                 </div>
                 <div>
@@ -161,7 +176,7 @@ export default function StockUpdateList() {
                     name="price"
                     value={stock.price || ""}
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500" // Increased padding
                   />
                 </div>
                 <div>
@@ -174,7 +189,7 @@ export default function StockUpdateList() {
                     name="addDate"
                     value={stock.addDate || ""} // Ensure value is in YYYY-MM-DD format
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-gray-200 text-gray-700 focus:outline-none"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-gray-200 text-gray-700 focus:outline-none" // Increased padding
                     readOnly // Making Add Date non-editable
                   />
                 </div>
@@ -188,41 +203,45 @@ export default function StockUpdateList() {
                     name="expiryDate"
                     value={stock.expiryDate || ""} // Ensure value is in YYYY-MM-DD format
                     onChange={handleChange}
-                    className="w-full p-2 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:border-blue-500" // Increased padding
                   />
                 </div>
               </div>
             </div>
           </div>
           {/* Button Layout Changes */}
-          <div className="flex flex-col justify-center items-center mt-4 space-y-4">
-            <button
-              type="button"
-              onClick={handleBack}
-              className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400 transition duration-200 shadow-md flex items-center justify-center w-full"
-            >
-              <IoArrowBackOutline className="mr-2" />
-              Back
-            </button>
+          <div className="flex flex-col justify-center items-center mt-6 space-y-4"> {/* Increased margin here */}
             <button
               type="button"
               onClick={handleUpdate}
-              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md flex items-center justify-center w-full"
+              className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 w-full"
             >
-              <MdUpdate className="mr-2" />
-              Update
+              Update Stock
             </button>
+            <button
+              type="button"
+              onClick={handleBack}
+              className="bg-gray-400 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-gray-500 transition duration-300 w-full"
+            >
+              <IoArrowBackOutline className="inline-block mr-2" />
+              Back
+            </button>
+            {validationError && <p className="text-red-600 text-sm">{validationError}</p>}
           </div>
-          {error && (
-            <span className="text-red-500 text-sm text-center mt-2">
-              {error}
-            </span>
-          )}
         </form>
       </div>
-      {/* New Footer */}
-      <footer className="bg-green-800 text-white text-center py-3 w-full fixed bottom-0">
-        <p>&copy; 2024 SmartBIN. All rights reserved.</p>
+
+      {/* Footer Section */}
+      <footer className="bg-green-800 text-white py-4 w-full">
+        <div className="container mx-auto text-center">
+          <p className="text-sm">
+            © {new Date().getFullYear()} SmartBIN. All Rights Reserved.
+          </p>
+          <p className="text-sm">
+            <a href="/privacy" className="text-gray-400 hover:text-gray-200">Privacy Policy</a> | 
+            <a href="/terms" className="text-gray-400 hover:text-gray-200"> Terms of Service</a>
+          </p>
+        </div>
       </footer>
     </div>
   );

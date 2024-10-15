@@ -32,7 +32,7 @@ const CountdownTimer = ({ startTime }) => {
         <p className="text-green-400 text-lg font-semibold">Service is completed!</p>
       ) : (
         <>
-          <p className="text-white text-lg font-semibold">Time Remaining:</p>
+          <p className="text-white text-lg font-semibold">Service Complete Time</p>
           <p className="text-white text-3xl font-bold">
             {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
           </p>

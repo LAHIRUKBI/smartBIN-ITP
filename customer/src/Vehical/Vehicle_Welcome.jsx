@@ -16,7 +16,7 @@ export default function Vehicle_Welcome() {
           Welcome, Vehicle Manager
         </h1>
         <p className="text-lg text-gray-600 mb-8 drop-shadow-md">
-          Manage all vehicle operations with ease and efficiency
+          Manage all vehicle operations with ease and efficiencys
         </p>
 
         {/* Buttons */}

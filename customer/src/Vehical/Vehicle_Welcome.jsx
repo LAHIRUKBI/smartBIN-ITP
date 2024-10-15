@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaTruck, FaEye, FaRoute, FaClipboardList } from 'react-icons/fa';
+import { FaTruck, FaEye, FaRoute, FaClipboardList, FaMapSigns } from 'react-icons/fa';
 
 export default function Vehicle_Welcome() {
   const navigate = useNavigate();
@@ -16,11 +16,11 @@ export default function Vehicle_Welcome() {
           Welcome, Vehicle Manager
         </h1>
         <p className="text-lg text-gray-600 mb-8 drop-shadow-md">
-          Manage all vehicle operations with ease and efficiencys
+          Manage all vehicle operations with ease and efficiency
         </p>
 
         {/* Buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
           {/* Add New Vehicle Button */}
           <button
             className="bg-blue-600 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-blue-700 hover:scale-105 transform transition-all duration-300 ease-in-out flex items-center justify-center space-x-3"
@@ -55,6 +55,15 @@ export default function Vehicle_Welcome() {
           >
             <FaClipboardList className="text-2xl" />
             <span>View Vehicle Orders</span>
+          </button>
+
+          {/* New Route Scheduling Button */}
+          <button
+            className="bg-red-500 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-red-600 hover:scale-105 transform transition-all duration-300 ease-in-out flex items-center justify-center space-x-3"
+            onClick={() => navigate('/routeSh')}
+          >
+            <FaMapSigns className="text-2xl" />
+            <span>Route Scheduling</span>
           </button>
         </div>
       </div>

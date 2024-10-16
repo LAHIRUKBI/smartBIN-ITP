@@ -9,7 +9,10 @@ import "jspdf-autotable";
 export default function Customer_order() {
   const [serviceRequests, setServiceRequests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [requestTimesUp, setRequestTimesUp] = useState({}); // New state to track timeouts
+  const [requestTimesUp, setRequestTimesUp] = useState({});
+  const [selectedFields, setSelectedFields] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [activeRequest, setActiveRequest] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,16 +35,21 @@ export default function Customer_order() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/api/requestservice/servicerequests/${id}`);
-      setServiceRequests(
-        serviceRequests.filter((request) => request._id !== id)
-      );
-      setRequestTimesUp((prev) => ({ ...prev, [id]: true })); // Mark time as up after deletion
+      setServiceRequests(serviceRequests.filter((request) => request._id !== id));
+      setRequestTimesUp((prev) => ({ ...prev, [id]: true }));
     } catch (error) {
       console.error("Error deleting service request:", error);
     }
   };
 
   const handleDownloadReceipt = (request) => {
+    setActiveRequest(request); // Set the active request
+    setSelectedFields({}); // Reset selected fields
+    setShowModal(true); // Show the modal for field selection
+  };
+
+  const generatePDF = () => {
+    const request = activeRequest;
     const doc = new jsPDF();
 
     // Company details
@@ -51,9 +59,9 @@ export default function Customer_order() {
 
     // Add company name in large green font, centered
     doc.setFontSize(30);
-    doc.setTextColor(34, 139, 34); // Dark green color
+    doc.setTextColor(34, 139, 34);
     const nameWidth = doc.getTextWidth(companyName);
-    doc.text(companyName, (doc.internal.pageSize.width - nameWidth) / 2, 22); // Centered
+    doc.text(companyName, (doc.internal.pageSize.width - nameWidth) / 2, 22);
 
     // Add receipt number and current date
     doc.setFontSize(12);
@@ -61,30 +69,29 @@ export default function Customer_order() {
     doc.text(receiptNumber, 14, 40);
     doc.text(`Date: ${currentDate}`, 14, 48);
 
-    // Prepare data for the table (Customer details)
+    // Prepare data for the table based on selected fields
     const tableData = [
-      { title: "Name", value: request.name },
-      { title: "Email", value: request.email },
-      { title: "Phone", value: request.phone },
-      { title: "Address", value: request.address },
-      { title: "Additional Info", value: request.additionalInfo || "N/A" },
-      { title: "Service ID", value: request.serviceId },
-      { title: "Payment Method", value: request.paymentMethod },
-      {
-        title: "Submitted At",
-        value: new Date(request.submittedAt).toLocaleString(),
-      },
+      { title: "Name", value: request.name, field: "name" },
+      { title: "Email", value: request.email, field: "email" },
+      { title: "Phone", value: request.phone, field: "phone" },
+      { title: "Address", value: request.address, field: "address" },
+      { title: "Additional Info", value: request.additionalInfo || "N/A", field: "additionalInfo" },
+      { title: "Service ID", value: request.serviceId, field: "serviceId" },
+      { title: "Payment Method", value: request.paymentMethod, field: "paymentMethod" },
+      { title: "Submitted At", value: new Date(request.submittedAt).toLocaleString(), field: "submittedAt" },
     ];
+
+    const filteredData = tableData.filter((item) => selectedFields[item.field]);
 
     // Add a horizontal line before the table
     doc.setDrawColor(0, 0, 0);
-    doc.line(14, 50, doc.internal.pageSize.width - 14, 50); // Horizontal line
+    doc.line(14, 50, doc.internal.pageSize.width - 14, 50);
 
     // Use autotable to add the table
     doc.autoTable({
       head: [["Field", "Value"]],
-      body: tableData.map((item) => [item.title, item.value]),
-      startY: 55, // Start the table below the receipt details
+      body: filteredData.map((item) => [item.title, item.value]),
+      startY: 55,
       theme: "striped",
       styles: {
         fontSize: 12,
@@ -92,17 +99,17 @@ export default function Customer_order() {
         halign: "left",
       },
       headStyles: {
-        fillColor: [22, 160, 133], // Header background color (teal)
-        textColor: [255, 255, 255], // Header text color (white)
+        fillColor: [22, 160, 133],
+        textColor: [255, 255, 255],
         fontSize: 14,
         lineWidth: 0.5,
-        strokeColor: [0, 0, 0], // Border color for header cells
+        strokeColor: [0, 0, 0],
       },
       bodyStyles: {
-        fillColor: [255, 255, 255], // White background for body cells
-        textColor: [0, 0, 0], // Black text color
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
         lineWidth: 0.2,
-        strokeColor: [22, 160, 133], // Border color for body cells
+        strokeColor: [22, 160, 133],
       },
       margin: { top: 10 },
     });
@@ -125,15 +132,12 @@ export default function Customer_order() {
     doc.setFontSize(10);
     contactInfo.forEach((info, index) => {
       const textWidth = doc.getTextWidth(info);
-      doc.text(
-        info,
-        (doc.internal.pageSize.width - textWidth) / 2,
-        pageHeight - 40 + index * 10
-      );
+      doc.text(info, (doc.internal.pageSize.width - textWidth) / 2, pageHeight - 40 + index * 10);
     });
 
     // Save the PDF
     doc.save(`receipt-${request._id}.pdf`);
+    setShowModal(false); // Close the modal
   };
 
   const filteredRequests = serviceRequests.filter((request) =>
@@ -181,7 +185,6 @@ export default function Customer_order() {
                   startTime.getTime() + 24 * 60 * 60 * 1000
                 );
 
-                // Determine if time is up
                 const isTimeUp =
                   requestTimesUp[request._id] || new Date() > endTime;
 
@@ -232,64 +235,91 @@ export default function Customer_order() {
                       </div>
                     </div>
 
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleDownloadReceipt(request)}
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition-colors duration-300"
-                      >
-                        <FaFilePdf className="inline-block mr-1" /> Download
-                        Receipt
-                      </button>
+                    <div className="mt-auto flex justify-between space-x-4">
                       <button
                         onClick={() => handleUpdate(request._id)}
-                        disabled={isTimeUp} // Disable if time is up
-                        className={`w-full flex items-center bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded transition-colors duration-300 ${
-                          isTimeUp ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
+                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors duration-300"
                       >
-                        <FaEdit className="inline-block mr-1" /> Update
+                        <FaEdit className="inline-block mr-2" />
+                        Update
                       </button>
                       <button
                         onClick={() => handleDelete(request._id)}
-                        className="w-full bg-red-500 hover:bg-red-600 text-white p-2 rounded transition-colors duration-300"
+                        className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition-colors duration-300"
                       >
-                        <FaTrash className="inline-block mr-1" /> Delete
+                        <FaTrash className="inline-block mr-2" />
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => handleDownloadReceipt(request)}
+                        className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors duration-300"
+                      >
+                        <FaFilePdf className="inline-block mr-2" />
+                        Download Receipt
                       </button>
                     </div>
                   </div>
                 );
               })
             ) : (
-              <div className="text-center col-span-1">
-                <h2 className="text-xl text-gray-500">
-                  No service requests found.
-                </h2>
-              </div>
+              <p className="text-center text-gray-600 text-xl">
+                No service requests found.
+              </p>
             )}
           </div>
         </div>
       </div>
-      <footer className="bg-green-800 text-white text-center py-4">
-                <div className="container mx-auto">
-                    <h3 className="text-lg font-bold mb-2">Join Us in Making a Difference!</h3>
-                    <p className="mb-2">Your journey towards a greener planet starts here.</p>
-                    <div className="flex justify-center mb-2">
-                        <a href="https://facebook.com" className="mx-2 text-gray-300 hover:text-white">
-                            <i className="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com" className="mx-2 text-gray-300 hover:text-white">
-                            <i className="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://instagram.com" className="mx-2 text-gray-300 hover:text-white">
-                            <i className="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://linkedin.com" className="mx-2 text-gray-300 hover:text-white">
-                            <i className="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                    <p className="text-sm">© {new Date().getFullYear()} Your Company. All rights reserved.</p>
+
+      {/* Modal for selecting fields */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">Select Fields for Receipt</h2>
+            <div className="space-y-4">
+              {[
+                { label: "Name", field: "name" },
+                { label: "Email", field: "email" },
+                { label: "Phone", field: "phone" },
+                { label: "Address", field: "address" },
+                { label: "Additional Info", field: "additionalInfo" },
+                { label: "Service ID", field: "serviceId" },
+                { label: "Payment Method", field: "paymentMethod" },
+                { label: "Submitted At", field: "submittedAt" },
+              ].map(({ label, field }) => (
+                <div key={field} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={field}
+                    checked={selectedFields[field] || false}
+                    onChange={() =>
+                      setSelectedFields((prev) => ({
+                        ...prev,
+                        [field]: !prev[field],
+                      }))
+                    }
+                    className="mr-2"
+                  />
+                  <label htmlFor={field}>{label}</label>
                 </div>
-            </footer>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition-colors duration-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={generatePDF}
+                className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors duration-300"
+              >
+                Generate PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

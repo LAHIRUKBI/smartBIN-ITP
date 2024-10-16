@@ -223,10 +223,11 @@ export default function StockCreateList() {
                       Select a category
                     </option>
                     <option value="electronics">Electronics</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="furniture">Furniture</option>
+                    <option value="fashion">Cloths</option>
+                    <option value="furniture">Plastic</option>
                     <option value="groceries">Groceries</option>
-                    <option value="stationery">Stationery</option>
+                    <option value="stationery">Glass</option>
+                    <option value="Metal">Metal</option>
                   </select>
                   <AiOutlineTags className="absolute top-3 left-3 text-gray-400" />
                 </div>

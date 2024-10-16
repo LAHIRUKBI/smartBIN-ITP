@@ -62,7 +62,7 @@ export default function Packing_orders() {
     navigate('/packing_orders_update', { state: { order } });
   };
 
-  //  function to generate PDF using autoTable
+  // Generate PDF for all orders
   const generatePDF = () => {
     const doc = new jsPDF();
     doc.text('Packing Orders Report', 14, 20);
@@ -86,6 +86,27 @@ export default function Packing_orders() {
 
     doc.autoTable({ head: [tableColumn], body: tableRows, startY: 30 });
     doc.save('packing_orders_report.pdf');
+  };
+
+  // Function to generate individual packing order report
+  const generateIndividualReport = (order) => {
+    const doc = new jsPDF();
+    doc.text(`Packing Order Report - ${order._id}`, 20, 10);
+    doc.autoTable({
+      head: [["Field", "Details"]],
+      body: [
+        ["Order ID", order._id],
+        ["Name", order.name],
+        ["Email", order.email],
+        ["Phone", order.phone],
+        ["Address", order.address],
+        ["Service ID", order.serviceId],
+        ["Payment Method", order.paymentMethod],
+        ["Quantity", order.quantity],
+        ["Submitted At", new Date(order.submittedAt).toLocaleString()],
+      ],
+    });
+    doc.save(`packing_order_report_${order._id}.pdf`);
   };
 
   const sendToStockManager = (order) => {
@@ -154,6 +175,9 @@ export default function Packing_orders() {
                   </button>
                   <button onClick={() => deleteOrder(order._id)} className="w-full bg-red-500 text-white py-2 rounded-full hover:bg-red-600 transition duration-200">
                     Delete
+                  </button>
+                  <button onClick={() => generateIndividualReport(order)} className="w-full bg-purple-500 text-white py-2 rounded-full hover:bg-purple-600 transition duration-200">
+                    Generate Individual Report
                   </button>
                   <button onClick={() => sendToStockManager(order)} className="w-full bg-indigo-500 text-white py-2 rounded-full hover:bg-indigo-600 transition duration-200">
                     Send to Stock Manager

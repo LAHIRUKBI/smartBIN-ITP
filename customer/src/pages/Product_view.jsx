@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHome, FaPlus } from 'react-icons/fa'; // Import icons from react-icons
-import jsPDF from 'jspdf'; // Import jsPDF
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'; // Import jsPDF autoTable
 
 export default function Product_view() {
   const [products, setProducts] = useState([]);
@@ -31,7 +32,6 @@ export default function Product_view() {
   
     fetchProducts();
   }, []);
-  
 
   const handleDeleteConfirmation = (productId) => {
     setProductToDelete(productId); // Set the product ID to delete
@@ -61,46 +61,26 @@ export default function Product_view() {
     navigate(`/product_update/${productId}`); // Navigate to the update page with product ID
   };
 
+  // Generate PDF for individual product report
   const handleItemReport = (product) => {
     const doc = new jsPDF();
-  
-    // Set document title
-    doc.setFontSize(20);
-    doc.text('Product Report', 20, 20);
-    doc.setFontSize(12);
-    
-    let y = 30; // Starting Y position for the product details
-    const margin = 20; // Left margin
-    const pageWidth = doc.internal.pageSize.getWidth(); // Page width
-    const textWidth = pageWidth - 2 * margin; // Text width accounting for margins
-  
-    // Add product details to the PDF
-    doc.setFontSize(14);
-    doc.text(`Product Name: ${product.name}`, margin, y);
-    y += 10;
-  
-    // Split text for material, description, and other fields to prevent overflow
-    const materialLines = doc.splitTextToSize(`Material: ${product.material}`, textWidth);
-    doc.text(materialLines, margin, y);
-    y += materialLines.length * 10; // Adjust y position based on number of lines
-  
-    const descriptionLines = doc.splitTextToSize(`Description: ${product.description}`, textWidth);
-    doc.text(descriptionLines, margin, y);
-    y += descriptionLines.length * 10;
-  
-    doc.text(`Quantity: ${product.quantity}`, margin, y);
-    y += 10;
-  
-    doc.text(`Unit Price: $${product.unitPrice}`, margin, y);
-    y += 10;
-  
-    const dateLines = doc.splitTextToSize(`Date: ${new Date(product.date).toLocaleDateString()}`, textWidth);
-    doc.text(dateLines, margin, y);
-  
-    // Save the PDF
+    doc.text(`Product Report - ${product.name}`, 20, 10);
+
+    // Add product details to the PDF using autoTable
+    doc.autoTable({
+      head: [["Field", "Details"]],
+      body: [
+        ["Product Name", product.name],
+        ["Material", product.material],
+        ["Description", product.description],
+        ["Quantity", product.quantity],
+        ["Unit Price", `$${product.unitPrice}`],
+        ["Date", new Date(product.date).toLocaleDateString()],
+      ],
+    });
+
     doc.save(`${product.name}_report.pdf`); // Save PDF with product name
   };
-  
 
   // Filtered products based on the search query
   const filteredProducts = products.filter(product =>

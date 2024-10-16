@@ -17,6 +17,8 @@ export default function Packing_orders_update() {
     quantity: order.quantity || '',
   });
 
+  const [errors, setErrors] = useState({}); // For storing validation errors
+
   // Update the formData state on input change
   const handleInputChange = (e) => {
     setFormData({
@@ -25,9 +27,40 @@ export default function Packing_orders_update() {
     });
   };
 
+  // Validation function to check for errors
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Check if required fields are filled
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.address.trim()) newErrors.address = 'Address is required';
+    if (!formData.serviceId.trim()) newErrors.serviceId = 'Service ID is required';
+    if (!formData.paymentMethod.trim()) newErrors.paymentMethod = 'Payment method is required';
+    if (!formData.quantity) newErrors.quantity = 'Quantity is required';
+
+    // Email validation (basic format)
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formData.email && !emailPattern.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Phone number validation (only digits, length 10-15)
+    const phonePattern = /^[0-9]{10,15}$/;
+    if (formData.phone && !phonePattern.test(formData.phone)) {
+      newErrors.phone = 'Phone number must be 10-15 digits long';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
   // Function to submit the updated order details
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return; // Stop if validation fails
+
     try {
       await axios.put(`/api/order/update/${order._id}`, formData); // Send the update request to the backend
       alert('Order updated successfully');
@@ -52,6 +85,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.name && <p className="text-red-500">{errors.name}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Email</label>
@@ -63,6 +97,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.email && <p className="text-red-500">{errors.email}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Phone</label>
@@ -74,6 +109,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.phone && <p className="text-red-500">{errors.phone}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Address</label>
@@ -85,6 +121,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.address && <p className="text-red-500">{errors.address}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Service ID</label>
@@ -96,6 +133,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.serviceId && <p className="text-red-500">{errors.serviceId}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Payment Method</label>
@@ -107,6 +145,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.paymentMethod && <p className="text-red-500">{errors.paymentMethod}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Quantity</label>
@@ -118,6 +157,7 @@ export default function Packing_orders_update() {
             className="w-full p-2 border rounded-lg"
             required
           />
+          {errors.quantity && <p className="text-red-500">{errors.quantity}</p>}
         </div>
         <button
           type="submit"

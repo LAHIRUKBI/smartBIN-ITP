@@ -11,7 +11,7 @@ export default function Stock_welcome() {
       <div className="max-w-md w-full bg-white bg-opacity-90 shadow-2xl rounded-3xl overflow-hidden">
         <div className="p-8">
           <h1 className="text-4xl font-extrabold mb-4 text-center text-green-600">
-            Welcome, Stock Manager!
+            Welcome, Stock Manager
           </h1>
           <p className="text-md mb-6 text-center text-green-700">
             Manage your stock efficiently. Use the options below to create new

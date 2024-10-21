@@ -255,7 +255,7 @@ export default function Customer_order() {
                         className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors duration-300"
                       >
                         <FaFilePdf className="inline-block mr-2" />
-                        Download Receipt
+                        Receipt
                       </button>
                     </div>
                   </div>

@@ -167,13 +167,13 @@ export default function Customer_order() {
               onClick={() => navigate("/customer_request")}
               className="bg-teal-500 hover:bg-teal-600 text-white p-3 rounded transition-colors duration-300 shadow-md"
             >
-              Go to Request Form
+              Request Form
             </button>
             <button
               onClick={() => navigate("/customer_welcome")}
               className="bg-green-500 hover:bg-green-600 text-white p-3 rounded transition-colors duration-300 shadow-md"
             >
-              Go to Stock Welcome
+              Stock Welcome
             </button>
           </div>
 
@@ -255,7 +255,7 @@ export default function Customer_order() {
                         className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors duration-300"
                       >
                         <FaFilePdf className="inline-block mr-2" />
-                        Download Receipt
+                        Receipt
                       </button>
                     </div>
                   </div>

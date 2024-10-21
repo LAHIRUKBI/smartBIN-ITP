@@ -59,19 +59,28 @@ export default function Customer_request() {
         </h1>
 
         <div className="space-y-8">
-          {services.map(service => (
-            <div key={service.id} className="bg-gray-100 rounded-lg shadow-lg p-6 border border-gray-300 transition-transform transform hover:scale-105 duration-300 ease-in-out hover:bg-gray-200">
+          {services.map((service) => (
+            <div
+              key={service.id}
+              className="bg-gray-100 rounded-lg shadow-lg p-6 border border-gray-300 transition-transform transform hover:scale-105 duration-300 ease-in-out hover:bg-gray-200"
+            >
               <div className="flex items-center space-x-6">
-                <img 
-                  src={service.image} 
-                  alt={service.type} 
-                  className="w-32 h-32 object-cover rounded-lg shadow-md"
+                <img
+                  src={service.image}
+                  alt={service.type}
+                  className="w-48 h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transform transition-transform duration-300 hover:scale-110"
                 />
                 <div className="flex-1">
-                  <h2 className="text-2xl font-semibold text-green-600 mb-2">{service.type}</h2>
+                  <h2 className="text-2xl font-semibold text-green-600 mb-2">
+                    {service.type}
+                  </h2>
                   <p className="text-gray-700 mb-2">{service.description}</p>
-                  <p className="text-gray-600 mb-1"><strong>Availability:</strong> {service.availability}</p>
-                  <p className="text-gray-600 mb-4"><strong>Cost:</strong> {service.cost}</p>
+                  <p className="text-gray-600 mb-1">
+                    <strong>Availability:</strong> {service.availability}
+                  </p>
+                  <p className="text-gray-600 mb-4">
+                    <strong>Cost:</strong> {service.cost}
+                  </p>
                   <p className="text-gray-600 mb-4">{service.details}</p>
                   <button
                     onClick={() => handleRequestClick(service.id)}

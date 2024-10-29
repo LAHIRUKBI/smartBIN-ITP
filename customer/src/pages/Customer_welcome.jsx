@@ -34,7 +34,7 @@ export default function CustomerWelcome() {
               onClick={() => navigate('/customer_orders')}
             >
               <FaBoxOpen className="text-white text-4xl mb-2 animate-bounce" />
-              <h2 className="text-lg font-semibold text-white mb-1">View Orders</h2>
+              <h2 className="text-lg font-semibold text-white mb-1">My Orders</h2>
               <p className="text-gray-100 text-xs text-center">
                 Track your orders and view past services.
               </p>

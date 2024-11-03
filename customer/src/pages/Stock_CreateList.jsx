@@ -129,7 +129,7 @@ export default function StockCreateList() {
           {/* Right Side Form */}
           <div className="w-full md:w-2/3 p-6 bg-gray-50">
             <h2 className="text-gray-800 text-4xl font-bold mb-4 text-center">
-              Add New Stock
+              Add Stock
             </h2>
             <p className="text-gray-600 text-sm text-center mb-6">
               Fill in the details below to add a new stock item to your

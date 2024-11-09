@@ -159,7 +159,7 @@ export default function StockView() {
         <div className="max-w-7xl mx-auto">
           {/* Introduction Section */}
           <div className="mb-8 text-center">
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-4">Stock Controller System</h1>
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-4">Stock Controller UI</h1>
           </div>
 
           {/* Available Stocks Count */}

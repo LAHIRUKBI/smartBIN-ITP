@@ -20,38 +20,98 @@ export default function OrderPayment() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const totalAmount = (product?.unitPrice || 0) * quantity;
+
+  const validateField = (name, value) => {
+    let errorMsg = '';
+
+    switch (name) {
+      case 'name':
+        if (!value.trim()) errorMsg = 'Name is required.';
+        break;
+      case 'address':
+        if (!value.trim()) errorMsg = 'Address is required.';
+        break;
+      case 'phoneNumber':
+        if (!value.trim()) {
+          errorMsg = 'Phone number is required.';
+        } else if (!/^\d{10}$/.test(value)) {
+          errorMsg = 'Phone number must be 10 digits.';
+        }
+        break;
+      case 'cardNumber':
+        if (!value.trim()) {
+          errorMsg = 'Card number is required.';
+        } else if (!/^\d{16}$/.test(value)) {
+          errorMsg = 'Card number must be 16 digits.';
+        }
+        break;
+      case 'expiryDate':
+        if (!value.trim()) {
+          errorMsg = 'Expiry date is required.';
+        } else if (!/^\d{2}\/\d{2}$/.test(value)) {
+          errorMsg = 'Expiry date must be in MM/YY format.';
+        }
+        break;
+      case 'cvv':
+        if (!value.trim()) {
+          errorMsg = 'CVV is required.';
+        } else if (!/^\d{3}$/.test(value)) {
+          errorMsg = 'CVV must be 3 digits.';
+        }
+        break;
+      default:
+        break;
+    }
+
+    setFieldErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errorMsg,
+    }));
+
+    return errorMsg === '';
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    validateField(name, value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate inputs
-    if (!recipientDetails.name || !recipientDetails.address || !recipientDetails.phoneNumber) {
-      setError("Please fill in all recipient details.");
-      return;
-    }
+    // Validate all fields
+    const isRecipientValid =
+      validateField('name', recipientDetails.name) &&
+      validateField('address', recipientDetails.address) &&
+      validateField('phoneNumber', recipientDetails.phoneNumber);
 
-    // Validate card details if payment method is 'card'
-    if (paymentMethod === 'card') {
-      if (!cardDetails.cardNumber || !cardDetails.expiryDate || !cardDetails.cvv) {
-        setError("Please fill in all card details.");
-        return;
-      }
+    const isCardValid =
+      paymentMethod === 'card'
+        ? validateField('cardNumber', cardDetails.cardNumber) &&
+          validateField('expiryDate', cardDetails.expiryDate) &&
+          validateField('cvv', cardDetails.cvv)
+        : true;
+
+    if (!isRecipientValid || !isCardValid) {
+      setError('Please correct the highlighted fields.');
+      return;
     }
 
     const orderData = {
       productId: product._id,
-      productName: product.name,  // Include the product name
+      productName: product.name,
       quantity,
       totalAmount,
       recipientDetails,
       paymentMethod,
-      cardDetails: paymentMethod === 'card' ? cardDetails : null, // Include card details only for card payment
-  };
+      cardDetails: paymentMethod === 'card' ? cardDetails : null,
+    };
 
     setLoading(true);
-    setError(''); // Reset error message
+    setError('');
 
     try {
       const response = await fetch('/api/productorder', {
@@ -70,14 +130,14 @@ export default function OrderPayment() {
 
       const data = await response.json();
       if (data.success) {
-        alert("Order submitted successfully!");
+        alert('Order submitted successfully!');
         navigate('/');
       } else {
-        setError("Order submission failed. Please try again.");
+        setError('Order submission failed. Please try again.');
       }
     } catch (error) {
-      setError("An unexpected error occurred. Please try again.");
-      console.error("Error during order submission:", error); // Log error for debugging
+      setError('An unexpected error occurred. Please try again.');
+      console.error('Error during order submission:', error);
     } finally {
       setLoading(false);
     }
@@ -104,7 +164,7 @@ export default function OrderPayment() {
             />
           </div>
           <p className="text-lg font-bold mb-4"><strong>Total Amount:</strong> ${totalAmount.toFixed(2)}</p>
-          {error && <p className="text-red-600 mb-4">{error}</p>} {/* Display error message */}
+          {error && <p className="text-red-600 mb-4">{error}</p>}
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             {/* Recipient Details */}
             <div>
@@ -114,9 +174,11 @@ export default function OrderPayment() {
                 name="name"
                 value={recipientDetails.name}
                 onChange={(e) => setRecipientDetails({ ...recipientDetails, name: e.target.value })}
+                onBlur={handleBlur}
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
+              {fieldErrors.name && <p className="text-red-600">{fieldErrors.name}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Address</label>
@@ -125,9 +187,11 @@ export default function OrderPayment() {
                 name="address"
                 value={recipientDetails.address}
                 onChange={(e) => setRecipientDetails({ ...recipientDetails, address: e.target.value })}
+                onBlur={handleBlur}
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
+              {fieldErrors.address && <p className="text-red-600">{fieldErrors.address}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Phone Number</label>
@@ -136,11 +200,13 @@ export default function OrderPayment() {
                 name="phoneNumber"
                 value={recipientDetails.phoneNumber}
                 onChange={(e) => setRecipientDetails({ ...recipientDetails, phoneNumber: e.target.value })}
+                onBlur={handleBlur}
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
+              {fieldErrors.phoneNumber && <p className="text-red-600">{fieldErrors.phoneNumber}</p>}
             </div>
-            
+
             {/* Payment Method Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700">Payment Method</label>
@@ -164,20 +230,26 @@ export default function OrderPayment() {
                     name="cardNumber"
                     value={cardDetails.cardNumber}
                     onChange={(e) => setCardDetails({ ...cardDetails, cardNumber: e.target.value })}
+                    onBlur={handleBlur}
                     required
+                    maxLength="16"
                     className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
+                  {fieldErrors.cardNumber && <p className="text-red-600">{fieldErrors.cardNumber}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Expiry Date</label>
+                  <label className="block text-sm font-medium text-gray-700">Expiry Date (MM/YY)</label>
                   <input
                     type="text"
                     name="expiryDate"
                     value={cardDetails.expiryDate}
                     onChange={(e) => setCardDetails({ ...cardDetails, expiryDate: e.target.value })}
+                    onBlur={handleBlur}
                     required
+                    placeholder="MM/YY"
                     className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
+                  {fieldErrors.expiryDate && <p className="text-red-600">{fieldErrors.expiryDate}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">CVV</label>
@@ -186,9 +258,12 @@ export default function OrderPayment() {
                     name="cvv"
                     value={cardDetails.cvv}
                     onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
+                    onBlur={handleBlur}
                     required
+                    maxLength="3"
                     className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
+                  {fieldErrors.cvv && <p className="text-red-600">{fieldErrors.cvv}</p>}
                 </div>
               </>
             )}
@@ -196,14 +271,16 @@ export default function OrderPayment() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-md bg-teal-600 text-white font-semibold ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-teal-700'}`}
+              className={`mt-4 w-full p-3 bg-teal-600 text-white rounded-lg ${
+                loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-teal-700'
+              }`}
             >
-              {loading ? 'Processing...' : 'Pay Now'}
+              {loading ? 'Submitting...' : 'Submit Order'}
             </button>
           </form>
         </div>
       ) : (
-        <p className="text-center text-red-600">Product not found.</p>
+        <p className="text-center">Product details are not available.</p>
       )}
     </div>
   );

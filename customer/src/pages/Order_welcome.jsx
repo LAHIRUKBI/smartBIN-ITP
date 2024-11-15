@@ -37,7 +37,7 @@ export default function Order_welcome() {
               className="w-full flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg shadow-md hover:bg-green-600 transition-transform transform hover:scale-105 hover:shadow-lg"
             >
               <FaClipboardCheck className="mr-2" />
-              View Conform Order
+              View analyse of the order
             </button>
           </div>
         </div>
